@@ -4,46 +4,50 @@ import Router from "vue-router";
 import Home from "./pages/Home.vue";
 import Login from "./pages/Login.vue";
 import Dashboard from "./pages/Dashboard";
-import Monitoring from "./pages/Monitoring";
+import DailyTask from "./pages/DailyTask";
+import Pmdevice from "./pages/Pmdevice";
+// Containers
+const DefaultContainer = () => import("./containers/DefaultContainer");
 
 Vue.use(Router);
 let router = new Router({
     mode: "hash", // Demo is living in GitHub.io, so required!
-    //linkActiveClass: "open active",
+    linkActiveClass: "open active",
     scrollBehavior: () => ({
         y: 0,
     }),
     routes: [
         {
-            path: "/",
-            name: "Home",
-            component: Home,
-        },
-        {
             path: "/dashboard",
-            name: "dashboard",
-            component: Dashboard,
-        },
-        {
-            path: "/monitoring",
-            name: "monitoring",
-            component: Monitoring,
+            name: "Home",
+            icon: "icon-speedometer",
+            component: DefaultContainer,
+            // meta: {
+            //     requiresAuth: true,
+            // },
+            children: [
+                {
+                    path: "/dashboard",
+                    name: "dashboard",
+                    component: Dashboard,
+                },
+                {
+                    path: "/dailytask",
+                    name: "dailytask",
+                    component: DailyTask,
+                },
+                {
+                    path: "/pmdevice",
+                    name: "PMdevice",
+                    component: Pmdevice,
+                },
+            ],
         },
         {
             path: "/login",
             name: "login",
             component: Login,
         },
-        // {
-        //     path: "/dashboard",
-        //     redirect: "/dashboard",
-        //     name: "Dashboard",
-        //     component: Dashboard,
-        // },
-        // {
-        //     path: "/monitoring",
-        //     component: Monitoring,
-        // },
     ],
 });
 
