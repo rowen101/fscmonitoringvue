@@ -1,7 +1,6 @@
 import Vue from "vue";
 import Vuex from "vuex";
 import createPersistedState from "vuex-persistedstate";
-
 import axios from "axios";
 
 Vue.use(Vuex);
@@ -9,13 +8,9 @@ Vue.use(Vuex);
 export default new Vuex.Store({
     state: {
         status: "",
-        token: localStorage.getItem("token") || "",
+        token: localStorage.getItem("auth") || "",
         user: {},
         apiName: "",
-        site: "",
-        firstname: "",
-        warehousecode: "",
-        warehousedesc: "",
         nav: [],
         perPage: 10,
 
@@ -28,13 +23,13 @@ export default new Vuex.Store({
         }),
     ],
     mutations: {
-        auth_request(state) {
-            state.status = "loading";
-        },
         setToken(state, token) {
-            state.status = "success";
+            localStorage.setItem("auth", token);
             state.token = token;
-            localStorage.setItem("token", token);
+        },
+        clearToken(state) {
+            localStorage.removeItem("auth");
+            state.token = "";
         },
 
         auth_error(state) {

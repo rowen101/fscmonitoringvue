@@ -1,6 +1,6 @@
 import Vue from "vue";
 import Router from "vue-router";
-
+import store from "../store";
 import Home from "./pages/Home.vue";
 import Login from "./pages/Login.vue";
 import Dashboard from "./pages/Dashboard";
@@ -22,9 +22,9 @@ let router = new Router({
             name: "Home",
             icon: "icon-speedometer",
             component: DefaultContainer,
-            // meta: {
-            //     requiresAuth: true,
-            // },
+            meta: {
+                requiresAuth: true,
+            },
             children: [
                 {
                     path: "/dashboard",
@@ -53,11 +53,11 @@ let router = new Router({
 
 router.beforeEach((to, from, next) => {
     if (to.matched.some((record) => record.meta.requiresAuth)) {
-        //console.log(store.getters.isLoggedIn);
-        // if (store.getters.isLoggedIn) {
-        //     next();
-        //     return;
-        // }
+        console.log(store.getters.isLoggedIn);
+        if (store.getters.isLoggedIn) {
+            next();
+            return;
+        }
         next("/login");
     } else {
         next();

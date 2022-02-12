@@ -12,21 +12,11 @@ miniToastr.init();
 Vue.use(VueRouterBackButton, { router });
 Vue.use(BootstrapVue);
 Vue.component("v-select", Vselect);
-// Vue.use(VueRouter);
-// const router = new VueRouter({
-//     routes: routes,
-//     mode: "history",
-// });
-// const app = new Vue({
-//     el: "#app",
-//     router,
-//     store,
-//     render: (app) => app(App),
-// });
+
 new Vue({
     el: "#app",
     router,
-    store: store,
+    store,
     template: "<App/>",
     components: {
         App,

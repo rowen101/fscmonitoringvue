@@ -610,8 +610,10 @@ var render = function () {
     "AppHeaderDropdown",
     { attrs: { right: "", "no-caret": "" } },
     [
-      _c("template", { slot: "header" }, [_vm._v(" Admin")]),
-      _vm._v("\\\n    "),
+      _c("template", { slot: "header" }, [
+        _c("div", { staticClass: "mr-2" }, [_vm._v("Admin")]),
+      ]),
+      _vm._v(" "),
       _c(
         "template",
         { slot: "dropdown" },

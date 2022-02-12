@@ -1,6 +1,6 @@
 <template>
     <AppHeaderDropdown right no-caret>
-        <template slot="header"> Admin</template>\
+        <template slot="header"><div class="mr-2">Admin</div></template>
         <template slot="dropdown">
             <b-dropdown-item><i class="fa fa-lock" /> Logout</b-dropdown-item>
             <b-dropdown-header tag="div" class="text-center">

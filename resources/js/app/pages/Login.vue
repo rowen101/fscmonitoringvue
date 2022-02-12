@@ -95,14 +95,27 @@ export default {
             loading: true,
         };
     },
-    computed: {},
+    computed: {
+        getuservalue: {
+            get: function () {
+                return this.$store.getters.isLoggedIn;
+            },
+            set: function (value) {
+                this.$store.commit("setToken", value);
+            },
+        },
+    },
     methods: {
         login: function () {
+            if (this.getuservalue == undefined) {
+                console.log("no token");
+            }
             axios
                 .post("api/login", this.credentials)
                 .then((resp) => {
                     if (resp.data.success) {
-                        this.$tore.commit("setToken", resp.data.token);
+                        this.$store.commit("setToken", resp.data.token);
+                        this.$router.push("/dashboard");
                     }
                 })
                 .catch((err) => {
