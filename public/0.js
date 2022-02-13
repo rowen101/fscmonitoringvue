@@ -171,6 +171,12 @@ __webpack_require__.r(__webpack_exports__);
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _coreui_vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @coreui/vue */ "./node_modules/@coreui/vue/dist/coreui-vue.esm.js");
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_1__);
+//
+//
+//
+//
 //
 //
 //
@@ -188,6 +194,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 
+
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: "DefaultHeaderDropdownAccnt",
   components: {
@@ -197,6 +204,30 @@ __webpack_require__.r(__webpack_exports__);
     return {
       itemsCount: 42
     };
+  },
+  computed: {
+    firstname: {
+      get: function get() {
+        console.log(this.$store.getters.firstname);
+        return this.$store.getters.firstname;
+      },
+      set: function set(value) {}
+    }
+  },
+  methods: {
+    logout: function logout() {
+      var _this = this;
+
+      axios__WEBPACK_IMPORTED_MODULE_1___default.a.post("/api/logout", {
+        token: this.$store.state.token
+      }).then(function (resp) {
+        _this.$router.push("/login");
+
+        _this.$store.commit("clearToken");
+      })["catch"](function (err) {
+        console.log(err);
+      });
+    }
   }
 });
 
@@ -611,16 +642,16 @@ var render = function () {
     { attrs: { right: "", "no-caret": "" } },
     [
       _c("template", { slot: "header" }, [
-        _c("div", { staticClass: "mr-2" }, [_vm._v("Admin")]),
+        _c("label", [_vm._v("Hi!   " + _vm._s(_vm.firstname) + "  ")]),
       ]),
       _vm._v(" "),
       _c(
         "template",
         { slot: "dropdown" },
         [
-          _c("b-dropdown-item", [
+          _c("b-dropdown-item", { on: { click: _vm.logout } }, [
             _c("i", { staticClass: "fa fa-lock" }),
-            _vm._v(" Logout"),
+            _vm._v(" Logout\n        "),
           ]),
           _vm._v(" "),
           _c(
@@ -628,11 +659,6 @@ var render = function () {
             { staticClass: "text-center", attrs: { tag: "div" } },
             [_c("strong", [_vm._v("Settings")])]
           ),
-          _vm._v(" "),
-          _c("b-dropdown-item", [
-            _c("i", { staticClass: "fa fa-user" }),
-            _vm._v(" Profile"),
-          ]),
           _vm._v(" "),
           _c("b-dropdown-item", [
             _c("i", { staticClass: "fa fa-wrench" }),

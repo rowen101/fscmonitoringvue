@@ -66,6 +66,17 @@
                                             >Login</b-button
                                         >
                                     </div>
+                                    <div class="text-center mb-3 col-md-12">
+                                        <b-button
+                                            variant="primary"
+                                            class="btn btn-primary btn-block btn-rounded z-depth-1 waves-effect waves-light ng-hide"
+                                            @click="
+                                                show('foo-velocity', 'success')
+                                            "
+                                        >
+                                            Notification</b-button
+                                        >
+                                    </div>
                                     <!--Grid column-->
                                 </div>
                             </b-form>
@@ -76,12 +87,15 @@
                 </div>
             </b-row>
         </div>
+        <notifications
+            group="foo-velocity"
+            position="bottom right"
+            :speed="500"
+        />
     </div>
 </template>
 
 <script>
-import axios from "axios";
-
 export default {
     name: "Login",
     components: {},
@@ -104,23 +118,57 @@ export default {
                 this.$store.commit("setToken", value);
             },
         },
+        animation() {
+            return {
+                /**
+                 * Animation function
+                 *
+                 * Runs before animating, so you can take the initial height, width, color, etc
+                 * @param  {HTMLElement}  element  The notification element
+                 */
+                enter(element) {
+                    let height = element.clientHeight;
+                    return {
+                        // animates from 0px to "height"
+                        height: [height, 0],
+
+                        // animates from 0 to random opacity (in range between 0.5 and 1)
+                        opacity: [Math.random() * 0.5 + 0.5, 0],
+                    };
+                },
+                leave: {
+                    height: 0,
+                    opacity: 0,
+                },
+            };
+        },
     },
     methods: {
         login: function () {
             if (this.getuservalue == undefined) {
                 console.log("no token");
             }
-            axios
-                .post("api/login", this.credentials)
+            this.$store
+                .dispatch("login", this.credentials)
                 .then((resp) => {
-                    if (resp.data.success) {
-                        this.$store.commit("setToken", resp.data.token);
-                        this.$router.push("/dashboard");
-                    }
+                    this.$router.push("/dashboard");
                 })
                 .catch((err) => {
-                    console.log(err.data);
+                    console.log(err);
+                    reject(err);
                 });
+        },
+        show(group, type = "") {
+            this.$notify({
+                group,
+                title: "login complete",
+                text: "sample",
+                type,
+                data: {},
+            });
+        },
+        clean(group) {
+            this.$notify({ group, clean: true });
         },
     },
 };

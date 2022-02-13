@@ -1,17 +1,12 @@
 <template>
-    <!-- <div class="navbar">
-            <div><router-link to="/">Dashboard</router-link></div>
-            <div><router-link to="/login">Login</router-link></div>
-            <div><router-link to="/dashboard">Dahsboard</router-link></div>
-            <div><router-link to="/monitoring">Monitoring</router-link></div>
-
-            <b-button variant="danger">Button</b-button>
-        </div> -->
     <router-view></router-view>
 </template>
 <script>
 export default {
     name: "App",
+    isLoggedIn: function () {
+        return this.$store.getters.isLoggedIn;
+    },
 };
 </script>
 

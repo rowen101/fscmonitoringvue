@@ -22,6 +22,9 @@ export default {
             axios
                 .post("/api/checkToken", { token: this.$store.state.token })
                 .then((res) => {
+                    if (!res.data.success) {
+                        this.$store.commit("setToken", res.data.token);
+                    }
                     this.loading = false;
                 })
                 .catch((err) => {

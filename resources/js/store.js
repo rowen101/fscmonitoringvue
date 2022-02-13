@@ -13,7 +13,7 @@ export default new Vuex.Store({
         apiName: "",
         nav: [],
         perPage: 10,
-
+        firstname: "",
         isLoading: false,
     },
     computed: {},
@@ -23,6 +23,9 @@ export default new Vuex.Store({
         }),
     ],
     mutations: {
+        auth_request(state) {
+            state.status = "loading";
+        },
         setToken(state, token) {
             localStorage.setItem("auth", token);
             state.token = token;
@@ -31,7 +34,9 @@ export default new Vuex.Store({
             localStorage.removeItem("auth");
             state.token = "";
         },
-
+        firstname(state, firstname) {
+            state.firstname = firstname;
+        },
         auth_error(state) {
             state.status = "error";
         },
@@ -50,35 +55,15 @@ export default new Vuex.Store({
             state.isLoading = false;
             state.apiName = "";
         },
-        warehouse(state, isWarehouse) {
-            state.isWarehouse = isWarehouse;
-        },
+
         filter(state, isFilter) {
             state.isFilter = isFilter;
         },
-        branches(state, branches) {
-            state.branches = branches;
-        },
-        site(state, site) {
-            state.site = site;
-        },
+
         firstname(state, firstname) {
             state.firstname = firstname;
         },
-        accountName(state, accountName) {
-            state.accountName = accountName;
-        },
-        selectedWarehouse(state, selectedWarehouse) {
-            state.selectedWarehouse = selectedWarehouse;
-            localStorage.setItem(
-                "selectedWarehouse",
-                selectedWarehouse.serverwarehouseId
-            );
-        },
-        warehousecode(state, data) {
-            state.warehousecode = data.warehousecode;
-            state.warehousedesc = data.warehousedesc;
-        },
+
         setLoading(state, isLoading) {
             state.isLoading = isLoading;
         },
@@ -86,7 +71,29 @@ export default new Vuex.Store({
             state.nav = newStateNav;
         },
     },
-    actions: {},
+    actions: {
+        login({ commit }, userparam) {
+            return new Promise((resolve, reject) => {
+                commit("auth_request");
+                axios
+                    .post("api/login", userparam)
+                    .then((resp) => {
+                        if (resp.data.success) {
+                            commit("setToken", resp.data.token);
+                            commit("firstname", resp.data.user.name);
+                            this.user = resp.data.user;
+                            resolve(resp);
+                        } else {
+                            commit("setToken", resp.data.token);
+                            resolve(resp);
+                        }
+                    })
+                    .catch((err) => {
+                        console.log(err.data);
+                    });
+            });
+        },
+    },
     getters: {
         isLoggedIn: (state) => !!state.token,
         authStatus: (state) => state.status,
