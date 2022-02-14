@@ -12,7 +12,7 @@ git clone https://github.com/rowen101/fscmonitoringvue.git ProjectName
 
 checkout main branch
 
-open terminal window inside your cscore directory and type "composer install"
+open terminal window inside your monitoring directory and type "composer install"
 
 Copy and Rename the following files
 
@@ -51,9 +51,14 @@ terminal type "composer dump-autoload"
 -   Start wampserver services
 -   Browse "http://development.test"
 
+##### Run npm
+npm run watch 
+
 ##### Run using artisan
 
 terminal type "php artisan serve --host=development.cs --port=8080"
+or 
+php artisan serve
 
 ##### Creating Model via Terminal Window
 
