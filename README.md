@@ -1,78 +1,139 @@
-<p align="center"><img src="https://res.cloudinary.com/dtfbvvkyp/image/upload/v1566331377/laravel-logolockup-cmyk-red.svg" width="400"></p>
+## App Starter
 
-<p align="center">
-<a href="https://travis-ci.org/laravel/framework"><img src="https://travis-ci.org/laravel/framework.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://poser.pugx.org/laravel/framework/d/total.svg" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://poser.pugx.org/laravel/framework/v/stable.svg" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://poser.pugx.org/laravel/framework/license.svg" alt="License"></a>
-</p>
+Requirements:
 
-## About Laravel
+-   php 7.4.\* or higher
+-   Latest composer
+-   Make sure composer is using php 7.4.\* or higher
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+##### 1. Cloning and install Dependencies via composer
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+git clone https://github.com/rowen101/fscmonitoringvue.git ProjectName
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+checkout main branch
 
-## Learning Laravel
+open terminal window inside your cscore directory and type "composer install"
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+Copy and Rename the following files
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains over 1500 video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+1. env.COPYandREMOVEme to .env
 
-## Laravel Sponsors
+##### 2. Add sql login, development host and virtual host in apache
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the Laravel [Patreon page](https://patreon.com/taylorotwell).
+SQL Login  
+Username: maldito
+Password: balba2018!
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Cubet Techno Labs](https://cubettech.com)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[British Software Development](https://www.britishsoftware.co)**
-- **[Webdock, Fast VPS Hosting](https://www.webdock.io/en)**
-- **[DevSquad](https://devsquad.com)**
-- [UserInsights](https://userinsights.com)
-- [Fragrantica](https://www.fragrantica.com)
-- [SOFTonSOFA](https://softonsofa.com/)
-- [User10](https://user10.com)
-- [Soumettre.fr](https://soumettre.fr/)
-- [CodeBrisk](https://codebrisk.com)
-- [1Forge](https://1forge.com)
-- [TECPRESSO](https://tecpresso.co.jp/)
-- [Runtime Converter](http://runtimeconverter.com/)
-- [WebL'Agence](https://weblagence.com/)
-- [Invoice Ninja](https://www.invoiceninja.com)
-- [iMi digital](https://www.imi-digital.de/)
-- [Earthlink](https://www.earthlink.ro/)
-- [Steadfast Collective](https://steadfastcollective.com/)
-- [We Are The Robots Inc.](https://watr.mx/)
-- [Understand.io](https://www.understand.io/)
-- [Abdel Elrafa](https://abdelelrafa.com)
-- [Hyper Host](https://hyper.host)
-- [Appoly](https://www.appoly.co.uk)
-- [OP.GG](https://op.gg)
+##### Go to C:\Windows\System32\drivers\etc\hosts
 
-## Contributing
+127.0.0.1 development.test
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+##### Go to apache httpd-vhosts.conf file
 
-## Code of Conduct
+<VirtualHost _:80>  
+ ServerName OursDevelopment  
+ ServerAlias _.test  
+ DocumentRoot "D:\expo\dailytaskmonitoring\public"  
+ <Directory "D:\expo\dailytaskmonitoring\public">  
+ Options +Indexes +Includes +FollowSymLinks +MultiViews  
+ AllowOverride All  
+ Require local  
+ </Directory>  
+</VirtualHost>
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+##### 3. Clear cache and Run
 
-## Security Vulnerabilities
+terminal type "php artisan config:cache"  
+terminal type "composer dump-autoload"
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+##### Run using wampserver
 
-## License
+-   Start wampserver services
+-   Browse "http://development.test"
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+##### Run using artisan
+
+terminal type "php artisan serve --host=development.cs --port=8080"
+
+##### Creating Model via Terminal Window
+
+type: php artisan make:model app/Models/appName/className
+
+##### run Migrations via Terminal Window
+
+type: php artisan migrate --path=/database/migrations/appName
+
+##### run Seeder via Terminal Window
+
+type: php artisan db:seed --class=DatabaseSeederClass
+
+##### Using MSSQL into laravel
+
+-   download requirement for php 7.4 click [here](https://github.com/microsoft/msphpsql/releases/download/v5.9.0/Windows-7.4.zip)
+-   extract Windows-7.4.zip and copy _php_pdo_sqlsrv_74_ts.dll_ , php_sqlsrv_74_ts.dll into `wamp64\bin\php\php7.4.*\ext\`
+-   add this code in your php.ini extension both php and apache
+    extension=php_sqlsrv_74_ts.dll
+    extension=\_php_pdo_sqlsrv_74_ts.dll
+
+##### Add this connection parameter in your .env file
+
+DB_CONNECTION=sqlsrv
+DB_HOST=127.0.0.1  
+DB_DATABASE=dailydb  
+DB_USERNAME=sa  
+DB_PASSWORD="your password"
+
+#### Using Tinker
+
+-   In your root folder open terminal window type php artisan tinker
+-   type project namespace in console window
+    eg:
+    `namespace Coresafe\Models`
+    `App\Menu::all()`
+
+##### Learning Laravel
+
+Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of any modern web application framework, making it a breeze to get started learning the framework.
+
+##### Laravel Tutorial from Scratch
+
+https://www.youtube.com/watch?v=EU7PRmCpx-0&list=PLillGF-RfqbYhQsN5WMXy6VsDMKGadrJ-&index=1
+
+##### Audittrail setup
+
+-run command below
+composer require owen-it/laravel-auditing
+
+in audit.php under config change the connection according to the database type you need
+
+    'drivers' => [
+        'database' => [
+            'table'      => 'app_audits',
+            'connection' => 'mariaDBAudiTrail', //here you can change mysql, sqlserver, mariadb
+        ],
+    ],
+
+##### Auditrail MariaDB setup
+
+in config/database.php
+'auditrail' => env('DB_AUDITRAILCONNECTION','mariaDBAudiTrail'),
+in mysql change the port
+'port' => env('DB_PORT', '3307'),
+in audit.php under config change the connection according to the database type you need
+
+    'drivers' => [
+        'database' => [
+            'table'      => 'app_audits',
+            'connection' => 'mariaDBAudiTrail', //here you can change mysql, sqlserver, mariadb
+        ],
+    ],
+
+##### Using Auditrail database connection
+
+DB_CONNECTION=mysql
+DB_HOST=127.0.0.1
+DB_PORT=3306
+DB_DATABASE=AuditDB
+DB_USERNAME=root
+DB_PASSWORD=
+DB_CHARSET=utf8mb4
