@@ -2,7 +2,8 @@ import Vue from "vue";
 import Vuex from "vuex";
 import createPersistedState from "vuex-persistedstate";
 import axios from "axios";
-
+import miniToastr from "mini-toastr";
+miniToastr.init();
 Vue.use(Vuex);
 
 export default new Vuex.Store({
@@ -89,10 +90,18 @@ export default new Vuex.Store({
                         }
                     })
                     .catch((err) => {
-                        console.log(err.data);
+                        miniToastr.error(err);
                     });
             });
         },
+        register(uregister){
+
+            axios
+            .post("api/register", uregister)
+            .then(resp=>{
+
+            })
+        }
     },
     getters: {
         isLoggedIn: (state) => !!state.token,
