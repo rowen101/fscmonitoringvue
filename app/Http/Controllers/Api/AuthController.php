@@ -35,18 +35,4 @@ class AuthController extends Controller
         $logout = auth()->logout();
         return response()->json(['success' => true], 200);
     }
-
-    public function register(RegisterFormRequest $request)
-    {
-        $user = new User;
-        $user->email = $request->email;
-        $user->name = $request->name;
-        $user->password = bcrypt($request->password);
-        $user->save();
-
-        return response([
-            'status' => 'success',
-            'data' => $user
-        ], 200);
-    }
 }

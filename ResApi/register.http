@@ -3,7 +3,7 @@ content-type: application/json
 
 {
     "name":"rowen gonzales",
-    "email":"growen@live.com",
+    "email":"rgonzales@fastgroup.biz",
     "password":"@gonzales101",
     "password_confirmation":"@gonzales101"
 }
