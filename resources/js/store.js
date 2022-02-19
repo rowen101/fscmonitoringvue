@@ -94,14 +94,6 @@ export default new Vuex.Store({
                     });
             });
         },
-        register(uregister){
-
-            axios
-            .post("api/register", uregister)
-            .then(resp=>{
-
-            })
-        }
     },
     getters: {
         isLoggedIn: (state) => !!state.token,

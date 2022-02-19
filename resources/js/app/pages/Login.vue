@@ -5,9 +5,22 @@
                 <div class="form-elegant">
                     <div class="card border-none">
                         <div class="card-body mx-4">
+                            <b-alert :show="errors.length > 0" variant="danger">
+                                <h6 class="alert-heading">
+                                    Please fill in all required field!
+                                </h6>
+                                <ul>
+                                    <li
+                                        v-for="(error, i) in errors"
+                                        :key="`error-${i}`"
+                                    >
+                                        {{ error }}
+                                    </li>
+                                </ul>
+                            </b-alert>
                             <b-form>
                                 <!--Header-->
-                                    <h1>Login</h1>
+                                <h1>Login</h1>
 
                                 <!--Body-->
                                 <div class="md-form">
@@ -23,6 +36,7 @@
                                             class="form-control"
                                             placeholder="Username"
                                             autocomplete="username email"
+                                            required
                                         />
                                     </b-input-group>
                                 </div>
@@ -40,32 +54,23 @@
                                             placeholder="Password"
                                             autocomplete="current-password"
                                             v-model="credentials.password"
+                                            required
                                         />
                                     </b-input-group>
 
-
-                                        <p
-                                            class="font-small blue-text d-flex justify-content-end"
+                                    <p
+                                        class="font-small blue-text d-flex justify-content-end"
+                                    >
+                                        <router-link :to="'#'"
+                                            >Forgot Password?</router-link
                                         >
-                                            <router-link :to="'#'"
-                                                >Forgot Password?</router-link
-                                            >
-                                        </p>
-
+                                    </p>
                                 </div>
 
                                 <div class="row d-flex align-items-center mb-4">
                                     <!--Grid column-->
 
-                                     <div class="text-center mb-3 col-md-6">
-                                        <b-button
-                                            variant="secondary"
-                                            class="btn btn-primary btn-block btn-rounded z-depth-1 waves-effect waves-light ng-hide"
-                                            @click="register"
-                                            >Register</b-button
-                                        >
-                                    </div>
-                                     <div class="text-center mb-3 col-md-6">
+                                    <div class="text-center mb-3 col-md-12">
                                         <b-button
                                             variant="primary"
                                             class="btn btn-primary btn-block btn-rounded z-depth-1 waves-effect waves-light ng-hide"
@@ -74,6 +79,14 @@
                                         >
                                     </div>
 
+                                    <div class="text-center mb-3 col-md-12">
+                                        <b-button
+                                            variant="success"
+                                            class="btn btn-primary btn-block btn-rounded z-depth-1 waves-effect waves-light ng-hide"
+                                            @click="register"
+                                            >Create new Account</b-button
+                                        >
+                                    </div>
                                 </div>
                             </b-form>
                         </div>
@@ -99,6 +112,8 @@ export default {
     components: {},
     data() {
         return {
+            errors: [],
+
             filter: null,
             credentials: {
                 email: "",
@@ -115,11 +130,33 @@ export default {
             set: function (value) {
                 this.$store.commit("setToken", value);
             },
-        }
-
+        },
     },
     methods: {
-        login: function () {
+        checkForm: function (e) {
+            if (
+                this.credentials.email &&
+                this.credentials.password &&
+
+            ) {
+                return true;
+            }
+
+            this.errors = [];
+            if (!this.credentials.email) {
+                this.errors.push("email required.");
+            }
+            if (!this.credentials.password) {
+                this.errors.push("password required.");
+            }
+
+            e.preventDefault();
+        },
+        login: function (evt) {
+             evt.preventDefault();
+            if (!this.checkForm()) {
+                return;
+            }
             if (this.getuservalue == undefined) {
                 console.log("no token");
             }
@@ -131,13 +168,12 @@ export default {
                 })
                 .catch((err) => {
                     miniToastr.error(err.data);
-
                 });
         },
 
-        register(){
+        register() {
             this.$router.push("/register");
-        }
+        },
     },
 };
 </script>
