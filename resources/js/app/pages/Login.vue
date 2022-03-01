@@ -5,7 +5,7 @@
                 <div class="form-elegant">
                     <div class="card border-none">
                         <div class="card-body mx-4">
-                            <b-alert :show="errors.length > 0" variant="danger">
+                            <!-- <b-alert :show="errors.length > 0" variant="danger">
                                 <h6 class="alert-heading">
                                     Please fill in all required field!
                                 </h6>
@@ -17,7 +17,7 @@
                                         {{ error }}
                                     </li>
                                 </ul>
-                            </b-alert>
+                            </b-alert> -->
                             <b-form>
                                 <!--Header-->
                                 <h1>Login</h1>
@@ -54,7 +54,7 @@
                                             placeholder="Password"
                                             autocomplete="current-password"
                                             v-model="credentials.password"
-                                            required
+                                            v-on:keyup.enter="login"
                                         />
                                     </b-input-group>
 
@@ -133,38 +133,38 @@ export default {
         },
     },
     methods: {
-        checkForm: function (e) {
-            if (
-                this.credentials.email &&
-                this.credentials.password &&
+        // checkForm: function (e) {
+        //     if (
+        //         this.credentials.email &&
+        //         this.credentials.password &&
 
-            ) {
-                return true;
-            }
+        //     ) {
+        //         return true;
+        //     }
 
-            this.errors = [];
-            if (!this.credentials.email) {
-                this.errors.push("email required.");
-            }
-            if (!this.credentials.password) {
-                this.errors.push("password required.");
-            }
+        //     this.errors = [];
+        //     if (!this.credentials.email) {
+        //         this.errors.push("email required.");
+        //     }
+        //     if (!this.credentials.password) {
+        //         this.errors.push("password required.");
+        //     }
 
-            e.preventDefault();
-        },
-        login: function (evt) {
-             evt.preventDefault();
-            if (!this.checkForm()) {
-                return;
-            }
+        //     e.preventDefault();
+        // },
+        login: function () {
+            //  evt.preventDefault();
+            // if (!this.checkForm()) {
+            //     return;
+            // }
             if (this.getuservalue == undefined) {
                 console.log("no token");
             }
             this.$store
                 .dispatch("login", this.credentials)
                 .then((resp) => {
+                    // miniToastr.success("Login " + resp.data.success);
                     this.$router.push("/dashboard");
-                    miniToastr.success("Login " + resp.data.success);
                 })
                 .catch((err) => {
                     miniToastr.error(err.data);

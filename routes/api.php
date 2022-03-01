@@ -22,6 +22,7 @@ Route::group(['namespace' => 'Api'], function () {
     Route::post('login', 'AuthController@login');
     Route::post('checkToken', 'AuthController@checkToken');
     Route::post('logout', 'AuthController@logout');
-    Route::post('admin', 'AdminController@index');
+    Route::get('admin', 'AdminController@index');
     Route::post('register', 'RegisterController@register');
+    Route::get('menu', 'MenuController@index');
 });

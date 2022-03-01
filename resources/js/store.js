@@ -24,8 +24,8 @@ export default new Vuex.Store({
         }),
     ],
     mutations: {
-        auth_request(state) {
-            state.status = "loading";
+        auth_request(state, status) {
+            state.status = status;
         },
         setToken(state, token) {
             localStorage.setItem("auth", token);
@@ -64,7 +64,9 @@ export default new Vuex.Store({
         firstname(state, firstname) {
             state.firstname = firstname;
         },
-
+        user(state, user) {
+            state.user = user;
+        },
         setLoading(state, isLoading) {
             state.isLoading = isLoading;
         },
@@ -82,7 +84,8 @@ export default new Vuex.Store({
                         if (resp.data.success) {
                             commit("setToken", resp.data.token);
                             commit("firstname", resp.data.user.name);
-                            this.user = resp.data.user;
+                            commit("user", resp.data.user);
+                            commit("auth_request", resp.data.success);
                             resolve(resp);
                         } else {
                             commit("setToken", resp.data.token);

@@ -6,6 +6,7 @@ import Login from "./pages/Login.vue";
 import Register from "./pages/Register.vue";
 import Dashboard from "./pages/Dashboard";
 import DailyTask from "./pages/DailyTask";
+import DailyTaskSetup from "./pages/DailyTaskSetup";
 import Pmdevice from "./pages/Pmdevice";
 import Page404 from "./pages/Page404";
 // Containers
@@ -35,12 +36,22 @@ let router = new Router({
                 },
                 {
                     path: "/dailytask",
-                    name: "dailytask",
+                    name: "Monitoring List",
                     component: DailyTask,
                 },
                 {
+                    path: "/dailytask/add/",
+                    name: "New Monitoring setup",
+                    component: DailyTaskSetup,
+                },
+                {
+                    path: "/dailytask/modify/:id",
+                    name: "Update Monitoring setup",
+                    component: DailyTaskSetup,
+                },
+                {
                     path: "/pmdevice",
-                    name: "PMdevice",
+                    name: "PM Device",
                     component: Pmdevice,
                 },
             ],
@@ -56,10 +67,10 @@ let router = new Router({
             component: Register,
         },
         {
-            path: '/404',
-            name: 'Page404',
-            component: Page404
-          },
+            path: "/404",
+            name: "Page404",
+            component: Page404,
+        },
     ],
 });
 
