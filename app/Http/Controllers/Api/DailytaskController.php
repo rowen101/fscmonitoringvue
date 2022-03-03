@@ -16,13 +16,13 @@ class DailytaskController extends Controller
 
     public function __construct()
     {
-        $this->middleware('auth');
+        $this->middleware('jwtauth')->except('login');
     }
 
     public function index()
     {
         $data = DailyTask::all();
-        return response()->json(['success' => true], 200);
+        return response()->json(['success' => true, 'data' => $data], 200);
     }
 
     /**
@@ -43,7 +43,23 @@ class DailytaskController extends Controller
      */
     public function store(Request $request)
     {
-        //
+
+
+        $request->validate([]);
+        $db = new DailyTask;
+        $db->user_id = $request->input('user_id');
+        $db->site = $request->input('site');
+        $db->week = $request->input('week');
+        $db->district = $request->input('district');
+        $db->ticket = $request->input('ticket');
+        $db->type = $request->input('type');
+        $db->subject = $request->input('subject');
+        $db->raisedby = $request->input('raisedby');
+        $db->position = $request->input('position');
+        $db->department = $request->input('department');
+        $db->agent = $request->input('agent');
+        $db->save();
+        return response()->json(['success' => true, 'data' => $db], 200);
     }
 
     /**
@@ -77,7 +93,10 @@ class DailytaskController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $db = DailyTask::find($id);
+        $request->validate([]);
+        $db->store($request->all());
+        return response()->json(['success' => true, 'data' => $db], 200);
     }
 
     /**
@@ -88,6 +107,8 @@ class DailytaskController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $db = DailyTask::find($id);
+        $db->delete();
+        return response()->json(['success' => true], 200);
     }
 }

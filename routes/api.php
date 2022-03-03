@@ -25,4 +25,6 @@ Route::group(['namespace' => 'Api'], function () {
     Route::get('admin', 'AdminController@index');
     Route::post('register', 'RegisterController@register');
     Route::get('menu', 'MenuController@index');
+    Route::get('task-list', 'DailytaskController@index');
+    Route::post('task-store', 'DailytaskController@store');
 });

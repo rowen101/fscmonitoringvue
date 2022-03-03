@@ -3,6 +3,7 @@ import Vue from "vue";
 import App from "./app/pages/App";
 import router from "./app/router";
 import store from "./store";
+
 import BootstrapVue from "bootstrap-vue";
 import VueRouterBackButton from "vue-router-back-button";
 import "./polyfill";
