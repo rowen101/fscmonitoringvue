@@ -13,7 +13,7 @@ export default new Vuex.Store({
         user: {},
         apiName: "",
         nav: [],
-        perPage: 10,
+        perPage: 2,
         firstname: "",
         isLoading: false,
     },

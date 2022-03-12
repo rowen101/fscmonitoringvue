@@ -20,17 +20,20 @@
                         Export
                     </button>
                 </div>
-                <div class="newButton">
-                    <b-button
-                        variant="success"
-                        class="btnsm"
-                        @click="OnClinkNEwIndicator()"
-                    >
-                        <i class="fa fa-plus-circle"></i>&nbsp;New Ticket
-                    </b-button>
-                </div>
-                <b-row>
-                    <b-col md="4" class="my-1">
+                <div class="row justify-content-between text-left">
+                    <div class="form-group col-sm-6 flex-column d-flex">
+                        <div class="newButton">
+                            <b-button
+                                variant="success"
+                                class="btnsm"
+                                @click="OnClinkNEwIndicator()"
+                            >
+                                <i class="fa fa-plus-circle"></i>&nbsp;New
+                                Ticket
+                            </b-button>
+                        </div>
+                    </div>
+                    <div class="form-group col-sm-6 flex-column d-flex">
                         <b-form-group label-cols-sm="1" class="mb-0">
                             <b-input-group>
                                 <b-form-input
@@ -46,8 +49,9 @@
                                 </b-input-group-append>
                             </b-input-group>
                         </b-form-group>
-                    </b-col> </b-row
-                >&nbsp;
+                    </div>
+                </div>
+                &nbsp;
                 <b-table
                     show-empty
                     stacked="md"
@@ -63,24 +67,32 @@
                     :per-page="perPage"
                     :filter="filter"
                 >
-                    <template slot="action_button" slot-scope="data">
-                        <b-button
-                            variant="primary"
-                            class="btn btn-primary btn-sm btn-square"
-                            @click="
-                                OnClinkUpdateIndicator(data.item.indicatorId)
-                            "
-                        >
-                            <i class="fa fa-pencil-square-o"></i> </b-button
-                        >&nbsp;
-                        <!-- <router-link
-                  tag="button"
-                  class="btn btn-primary btn-sm btn-square"
-                  :to="'/Maintenance/2017042003480096/modify/indicator/' + data.item.indicatorId"
+                    <template #cell(week)="data">
+                        {{ data.item.week }}
+                    </template>
 
-                >
-                  <i class="fa fa-pencil-square-o"></i>
-                </router-link>&nbsp; -->
+                    <template #cell(status)="data">
+                        <i
+                            :class="
+                                data.item.status == 1
+                                    ? 'activeStatus icon-check active_icon'
+                                    : 'inactiveStatus icon-close inactive_icon'
+                            "
+                        ></i>
+                    </template>
+                    <template #cell(action_button)="data">
+
+
+                        <router-link
+                            tag="button"
+                            :to="
+                                '/dailytask/modify/' +
+                                data.item.id
+                            "
+                            class="btn btn-primary btn-sm btn-square"
+                        >
+                            <i class="fa fa-pencil-square-o"></i>
+                        </router-link>
                         <b-button
                             size="sm"
                             variant="danger"
@@ -90,24 +102,55 @@
                             <i class="fa fa-trash-o"></i>
                         </b-button>
                     </template>
-                    <template slot="description" slot-scope="data">
-                        <div class="ellipsis">
-                            <span v-b-popover.hover="data.item.description">{{
-                                data.item.description
-                            }}</span>
-                        </div>
+                    <template #cell(show_details)="row">
+                        <b-button
+                            size="sm"
+                            @click="row.toggleDetails"
+                            class="mr-2"
+                        >
+                            {{ row.detailsShowing ? "Hide" : "Show" }} Details
+                        </b-button>
                     </template>
-                    <template slot="valuedatatype" slot-scope="data">{{
-                        valueTypeToLemans(data.item.valuedatatype)
-                    }}</template>
-                    <template slot="status" slot-scope="data">
-                        <i
-                            :class="
-                                data.item.status == 'A'
-                                    ? 'activeStatus icon-check active_icon'
-                                    : 'inactiveStatus icon-close inactive_icon'
-                            "
-                        ></i>
+                    <template #row-details="row">
+                        <b-card>
+                            <b-row class="mb-2">
+                                <b-col sm="3" class="text-sm-right"
+                                    ><b>User:</b></b-col
+                                >
+
+
+                                <b-col>{{ row.item.raisedby }}</b-col>
+                            </b-row>
+
+
+
+                            <b-row class="mb-2">
+                                <b-col sm="3" class="text-sm-right"
+                                    ><b>Subject:</b></b-col
+                                >
+                                <b-col>{{ row.item.subject }}</b-col>
+                            </b-row>
+
+                            <b-row class="mb-2">
+                                <b-col sm="3" class="text-sm-right"
+                                    ><b>Branch:</b></b-col
+                                >
+                                <b-col>{{ row.item.site }}</b-col>
+                            </b-row>
+                            <b-row class="mb-2">
+                                <b-col sm="3" class="text-sm-right"
+                                    ><b>District:</b></b-col
+                                >
+                                <b-col>{{ row.item.district }}</b-col>
+                            </b-row>
+                            <b-row class="mb-2">
+                                <b-col sm="3" class="text-sm-right"
+                                    ><b>Agent:</b></b-col
+                                >
+                                <b-col>{{ row.item.agent }}</b-col>
+                            </b-row>
+
+                        </b-card>
                     </template>
                 </b-table>
             </b-card>
@@ -124,10 +167,54 @@
     </div>
 </template>
 <script>
+import api from "../services/api";
 export default {
     name: "Dailytask",
-    data() {
-        return {};
+    data: function () {
+        return {
+            //perPage: this.$store.getters.perPage,
+            perPage: 2,
+
+            totalItem: 0,
+            currentPage: 1,
+            isBusy: false,
+            sortOptions: [],
+            filter: null,
+            items: [],
+            fields: [
+                {
+                    week: { key: "week", label: "Full Week", sortable: true },
+                },
+                {
+                    ticket: { key: "ticket", label: "Ticket" },
+                },
+                 {
+                    ticket: { key: "subject", label: "Subject" },
+                },
+                 {
+                    ticket: { key: "raisedby", label: "Raisedby" },
+                },
+                 {
+                    ticket: { key: "department", label: "Department" },
+                },
+                 {
+                    ticket: { key: "ticket", label: "Ticket" },
+                },
+                {
+                    status: { key: "status", label: "Status" },
+                },
+                {
+                    show_details: {
+                        label: "Show Details",
+                    },
+                },
+                 {
+                    action_button: {
+                        label: "Action",
+                    },
+                },
+            ],
+        };
     },
     methods: {
         back: function () {
@@ -155,6 +242,59 @@ export default {
         OnClinkNEwIndicator: function () {
             this.$router.push("/dailytask/add");
         },
+        onPageSelect(page) {
+            this.isBusy = true;
+            let self = this;
+            self.$store.commit("setLoading", true);
+            let promise = api.instance.get("/task-list?page=" + page);
+
+            return promise
+                .then((resp) => {
+                    self.items = resp.data.item;
+                    self.totalItem = resp.data.totalItem;
+                    // Here we could override the busy state, setting isBusy to false
+                    self.isBusy = false;
+                    self.$store.commit("setLoading", false);
+                })
+                .catch((err) => {
+                    // Here we could override the busy state, setting isBusy to false
+                    self.isBusy = false;
+                    // Returning an empty array, allows table to correctly handle busy state in case of error
+                    self.$store.commit("setLoading", false);
+                    api.httpMsg(self, err.status, err.data);
+
+                    return [];
+                });
+        },
+        initTable() {
+            // Here we don't set isBusy prop, so busy state will be handled by table itself
+            this.isBusy = true;
+            let self = this;
+            //   self.$store.commit("setLoading", true);
+            let promise = api.instance.get("/task-list?page=" + self.perPage);
+
+            return promise
+                .then((resp) => {
+                    self.items = resp.data.item;
+                    self.totalItem = resp.data.totalItem;
+                    //self.$store.commit("setLoading", false);
+
+                    // Here we could override the busy state, setting isBusy to false
+                    //self.isBusy = false;
+                    //   return items;
+                })
+                .catch((err) => {
+                    // Here we could override the busy state, setting isBusy to false
+                    //   self.isBusy = false;
+                    //   self.$store.commit("setLoading", false);
+                    api.httpMsg(self, err.status, err.data);
+                    // Returning an empty array, allows table to correctly handle busy state in case of error
+                    return [];
+                });
+        },
+    },
+    created: function () {
+        this.initTable();
     },
 };
 </script>

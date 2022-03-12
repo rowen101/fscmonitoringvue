@@ -69,6 +69,9 @@
                                                 v-model.trim="form.ticket"
                                                 type="text"
                                                 placeholder="Ticket"
+                                                v-on:keyup.enter="
+                                                    onSearchTicket
+                                                "
                                             ></b-form-input>
                                             <!-- Attach Right button -->
                                             <b-input-group-append>
@@ -82,25 +85,6 @@
                                             </b-input-group-append>
                                         </b-input-group>
                                     </b-form-group>
-                                    <!-- <b-form-group>
-                                        <b-input-group-prepend>
-                                            <b-button variant="primary">
-                                                <i class="fa fa-search"></i>
-                                                Search
-                                            </b-button>
-                                        </b-input-group-prepend>
-                                        <b-form-input
-                                            type="text"
-                                            v-model="form.ticket"
-                                            @click="GetTicketID"
-                                            :class="
-                                                isChecked
-                                                    ? false == 'bg-white'
-                                                    : true == ' bg-gray'
-                                            "
-                                            :disabled="isChecked"
-                                        ></b-form-input>
-                                    </b-form-group> -->
                                 </div>
                                 <div
                                     class="form-group col-sm-6 flex-column d-flex"
@@ -143,7 +127,37 @@
                                     <b-form-input
                                         type="text"
                                         v-model="form.district"
-                                        placeholder="district"
+                                        placeholder="District"
+                                    ></b-form-input>
+                                </div>
+                            </div>
+                            <div class="row justify-content-between text-left">
+                                <div
+                                    class="form-group col-sm-6 flex-column d-flex"
+                                >
+                                    <label class="form-control-label px-3"
+                                        >Position<span class="text-danger">
+                                            *</span
+                                        ></label
+                                    >
+                                    <b-form-input
+                                        type="text"
+                                        v-model="form.position"
+                                        placeholder="Position"
+                                    ></b-form-input>
+                                </div>
+                                <div
+                                    class="form-group col-sm-6 flex-column d-flex"
+                                >
+                                    <label class="form-control-label px-3"
+                                        >Department<span class="text-danger">
+                                            *</span
+                                        ></label
+                                    >
+                                    <b-form-input
+                                        type="text"
+                                        v-model="form.department"
+                                        placeholder="Department"
                                     ></b-form-input>
                                 </div>
                             </div>
@@ -201,72 +215,13 @@
                 </b-form>
             </b-card>
         </b-col>
-        <b-modal v-model="ModalTicket" title="Select Ticket" hide-footer>
-            <input
-                type="Text"
-                placeholder="Search"
-                v-model="Searchticketid"
-                v-on:keyup.enter="onSearchTicket"
-                class="form-control mb-2"
-            />
-            <span v-if="Ticket == null"> no ticket</span>
-            <form class="form">
-                <div style="height: auto; overflow-x: auto">
-                    <b-list-group>
-                        <b-list-group-item
-                            v-for="(item, index) in Ticket"
-                            :key="index"
-                        >
-                            <div>
-                                <div v-if="loading">
-                                    <div class="spinner-border" role="role">
-                                        <span class="sr-only">loading...</span>
-                                    </div>
-                                </div>
 
-                                <div class="row" v-else>
-                                    <div class="col">TicketNumber</div>
-                                    <div class="col">
-                                        {{ item.TicketNumber }}
-                                    </div>
-                                    <div class="w-100"></div>
-                                    <div class="col">User</div>
-                                    <div class="col">{{ item.User }}</div>
-                                    <div class="w-100"></div>
-                                    <div class="col">Branch</div>
-                                    <div class="col">{{ item.UserBranch }}</div>
-                                    <div class="w-100"></div>
-                                    <div class="col">Subject</div>
-                                    <div class="col">{{ item.Subject }}</div>
-                                    <div class="w-100"></div>
-                                    <div class="col">Assigned to</div>
-                                    <div class="col">{{ item.Agent }}</div>
-                                    <div class="w-100"></div>
-                                    <div class="col">Status</div>
-                                    <div class="col">{{ item.Status }}</div>
-                                </div>
-                            </div>
-                            <br />
-                            <hr />
-                            <b-button
-                                type="submit"
-                                variant="success"
-                                @click="onSelectTicketID(item)"
-                            >
-                                <i class="fa fa-save"></i>
-                                {{ appendtext }} Tiket
-                            </b-button>
-                        </b-list-group-item>
-                    </b-list-group>
-                </div>
-            </form>
-        </b-modal>
-        <!-- <pre>{{$data|JSON}}</pre> -->
+        <!-- <pre>{{ $data | JSON }}</pre> -->
     </div>
 </template>
 <script>
 import Axios from "axios";
-import Api from "../services/api";
+import api from "../services/api";
 export default {
     name: "DailytaskSetup",
     data() {
@@ -345,14 +300,14 @@ export default {
             if (this.checkForm() == false) {
                 return;
             }
-            Api.instance
+            api.instance
                 .post("/task-store", this.form)
                 .then((res) => {
                     this.isShowAlert = true;
                     console.log(res);
                 })
                 .catch((err) => {
-                    console.log(err);
+                    api.httpMsg(self, err.status, err.data);
                 });
         },
         reload: function () {
@@ -374,24 +329,20 @@ export default {
                 { p }
             )
 
-                .then(function (resp) {
-                    resp.data.array.forEach((element) => {
-                        self.Ticket.push({});
+                .then((resp) => {
+                    resp.data.Tickets.forEach((item) => {
+                        self.form.agent = item.Agent;
+                        self.form.week = this.result[1];
+                        self.form.raisedby = item.User;
+                        self.form.site = item.UserBranch;
+                        self.form.department = item.UserPosition;
+                        self.form.district = item.District;
+                        self.form.subject = item.Subject;
+                        self.form.position = item.UserPosition;
                     });
-                    //@ts-ignorethis.Ticket = resp.data.Tickets;
-                    this.loading = false;
-                    this.form.week = this.result[1];
-                    //this.form.ticket = val.TicketNumber;
-                    // this.form.raisedby = resp.data.Tickets.val.User;
-                    // this.form.site = resp.data.Tickets.UserBranch;
-                    // this.form.district = resp.data.Tickets.District;
-                    // this.form.subject = resp.data.Tickets.Subject;
-                    // this.form.agent = resp.data.Tickets.Agent;
-                    // self.form = resp.data.Ticket;
-                    self.form.agent = resp.data.Tickets.Agent;
                 })
                 .catch((err) => {
-                    console.log(err);
+                    api.httpMsg(self, err.status, err.data);
                 });
         },
         onSelectTicketID: function (val) {
@@ -407,16 +358,16 @@ export default {
     },
 
     computed: {
-        filterchecklistid: function () {
-            var self = this;
-            return self.checklistIdoptions.filter(function (cust) {
-                return (
-                    cust.ticketno
-                        .toLowerCase()
-                        .indexOf(self.Searchticketid.toLowerCase()) >= 0
-                );
-            });
-        },
+        // filterchecklistid: function () {
+        //     var self = this;
+        //     return self.checklistIdoptions.filter(function (cust) {
+        //         return (
+        //             cust.ticketno
+        //                 .toLowerCase()
+        //                 .indexOf(self.Searchticketid.toLowerCase()) >= 0
+        //         );
+        //     });
+        // },
     },
     created: function () {},
 };

@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\DailyTask;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class DailytaskController extends Controller
 {
@@ -19,10 +20,24 @@ class DailytaskController extends Controller
         $this->middleware('jwtauth')->except('login');
     }
 
-    public function index()
+    public function index(Request $request)
     {
-        $data = DailyTask::all();
-        return response()->json(['success' => true, 'data' => $data], 200);
+        // $data = DailyTask::all();
+        // return response()->json(['success' => true, 'data' => $data], 200);
+        $query = DailyTask::query();
+        // $query = DB::table("core_daily_tasks")->get();
+        $perPage = 3;
+        $page = $request->input('page', 1);
+        $total = $query->count();
+
+        $result = $query->offset(($page - 1) * $perPage)->limit($perPage)->get();
+
+        return [
+            'item' => $result,
+            'totalItem' => $total,
+            'Page' => $page,
+            'Last_page' => ceil($total / $perPage)
+        ];
     }
 
     /**
@@ -47,6 +62,7 @@ class DailytaskController extends Controller
 
         $request->validate([]);
         $db = new DailyTask;
+
         $db->user_id = $request->input('user_id');
         $db->site = $request->input('site');
         $db->week = $request->input('week');
