@@ -4,7 +4,7 @@
             <b-card header>
                 <div slot="header">
                     <span>Daily Task Monitoring</span>
-                    <a
+                    <!-- <a
                         href="#"
                         class="btn btn-sm btn-info float-right ml-1"
                         id="printpagebutton"
@@ -18,7 +18,7 @@
                         @click="onexport"
                     >
                         Export
-                    </button>
+                    </button> -->
                 </div>
                 <div class="row justify-content-between text-left">
                     <div class="form-group col-sm-6 flex-column d-flex">
@@ -173,7 +173,7 @@ export default {
     data: function () {
         return {
             //perPage: this.$store.getters.perPage,
-            perPage: 2,
+            perPage: 5,
 
             totalItem: 0,
             currentPage: 1,
@@ -183,7 +183,7 @@ export default {
             items: [],
             fields: [
                 {
-                    week: { key: "week", label: "Full Week", sortable: true },
+                    week: { key: "week", label: "Week", sortable: true },
                 },
                 {
                     ticket: { key: "ticket", label: "Ticket" },

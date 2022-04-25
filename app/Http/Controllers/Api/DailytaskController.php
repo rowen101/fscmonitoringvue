@@ -25,8 +25,11 @@ class DailytaskController extends Controller
         // $data = DailyTask::all();
         // return response()->json(['success' => true, 'data' => $data], 200);
         $query = DailyTask::query();
+       //$query = DailyTask::query('created_at', 'DESC')
+
         // $query = DB::table("core_daily_tasks")->get();
-        $perPage = 3;
+
+        $perPage = 5;
         $page = $request->input('page', 1);
         $total = $query->count();
 
