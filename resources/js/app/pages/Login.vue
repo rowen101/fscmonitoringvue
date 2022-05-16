@@ -1,4 +1,5 @@
 <template>
+ <div class="animated fadeIn">
     <div class="app flex-row align-items-center">
         <div class="container">
             <b-row class="justify-content-center">
@@ -89,6 +90,7 @@
                 </b-col>
             </b-row>
         </div>
+    </div>
     </div>
 </template>
 

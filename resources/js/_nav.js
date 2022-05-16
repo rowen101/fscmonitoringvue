@@ -8,15 +8,15 @@ export default {
                 variant: "primary",
             },
         },
-        {
-            title: true,
-            name: "Monitoring",
-            class: "",
-            wrapper: {
-                element: "",
-                attributes: {},
-            },
-        },
+        // {
+        //     title: true,
+        //     name: "Monitoring",
+        //     class: "",
+        //     wrapper: {
+        //         element: "",
+        //         attributes: {},
+        //     },
+        // },
         {
             name: "DailyTask",
             url: "/dailytask",

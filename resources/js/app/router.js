@@ -9,6 +9,7 @@ import DailyTask from "./pages/DailyTask";
 import DailyTaskSetup from "./pages/DailyTaskSetup";
 import Pmdevice from "./pages/Pmdevice";
 import Page404 from "./pages/Page404";
+import CreateOsTicket from "./pages/CreateOsTicket";
 // Containers
 const DefaultContainer = () => import("./containers/DefaultContainer");
 
@@ -21,8 +22,9 @@ let router = new Router({
     }),
     routes: [
         {
-            path: "/dashboard",
-            name: "Home",
+            path: "/",
+            redirect: "/dashboard",
+            name: "OSTicket",
             icon: "icon-speedometer",
             component: DefaultContainer,
             meta: {
@@ -31,8 +33,11 @@ let router = new Router({
             children: [
                 {
                     path: "/dashboard",
-                    name: "dashboard",
+                    name: "Main",
                     component: Dashboard,
+                    meta: {
+                        requiresAuth: true
+                      }
                 },
                 {
                     path: "/dailytask",
@@ -60,6 +65,11 @@ let router = new Router({
             path: "/login",
             name: "login",
             component: Login,
+        },
+        {
+            path: "/createosticket",
+            name: "Create OsTicket",
+            component: CreateOsTicket,
         },
         {
             path: "/register",

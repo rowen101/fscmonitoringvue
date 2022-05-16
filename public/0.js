@@ -75,6 +75,12 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
 
 
 
@@ -485,25 +491,13 @@ var render = function () {
           }),
           _vm._v(" "),
           _c("b-link", { staticClass: "navbar-brand", attrs: { to: "#" } }, [
-            _c("img", {
-              staticClass: "navbar-brand-full",
-              attrs: {
-                src: "img/brand/logo.svg",
-                width: "89",
-                height: "25",
-                alt: "CoreUI Logo",
-              },
-            }),
+            _c("div", { staticClass: "navbar-brand-full" }, [
+              _c("h3", [_vm._v("OSTicket")]),
+            ]),
             _vm._v(" "),
-            _c("img", {
-              staticClass: "navbar-brand-minimized",
-              attrs: {
-                src: "img/brand/sygnet.svg",
-                width: "30",
-                height: "30",
-                alt: "CoreUI Logo",
-              },
-            }),
+            _c("div", { staticClass: "navbar-brand-minimized" }, [
+              _c("h3", [_vm._v("OSTicket")]),
+            ]),
           ]),
           _vm._v(" "),
           _c("SidebarToggler", {
@@ -1219,15 +1213,16 @@ __webpack_require__.r(__webpack_exports__);
     badge: {
       variant: "primary"
     }
-  }, {
-    title: true,
-    name: "Monitoring",
-    "class": "",
-    wrapper: {
-      element: "",
-      attributes: {}
-    }
-  }, {
+  }, // {
+  //     title: true,
+  //     name: "Monitoring",
+  //     class: "",
+  //     wrapper: {
+  //         element: "",
+  //         attributes: {},
+  //     },
+  // },
+  {
     name: "DailyTask",
     url: "/dailytask",
     icon: "icon-puzzle"
